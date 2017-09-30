@@ -1,0 +1,3 @@
+#!/bin/sh
+
+pg-erd --format svg $@

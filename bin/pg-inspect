@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+require 'pg'
+CONNECTION = PG.connect(dbname: ARGV.first)
+
+require_relative '../lib/pgerd'
+include Pgerd
+
+database = Database.new(ARGV.first)
+
+database.tables.each do |table|
+  puts "#{table.name}"
+  puts "-" * 20
+  puts table.columns.map { |column| "#{column.name} - #{column.data_type}" }
+  puts
+end
+
+if database.foreign_keys.any?
+  puts '# foreign keys'
+  database.foreign_keys.each { |x| puts x }
+end

@@ -1,0 +1,58 @@
+#!/usr/bin/env ruby
+require 'optparse'
+require_relative '../lib/pgerd'
+
+def parse_arguments!(args = ARGV)
+  options = {
+    format: 'dot',
+    show_id: true,
+    show_timestamps: true,
+    verbose: false
+  }
+
+  opt_parser = OptionParser.new do |opts|
+    opts.banner = "Usage: #{$0} [options] DATABASE"
+    opts.separator ''
+
+    opts.on("-fFORMAT", "--format FORMAT", GraphViz::Constants::FORMATS.join(', ') + " (default=dot)") do |format|
+      options[:format] = format.downcase
+    end
+
+    opts.on("--[no-]id", 'Show (or hide) the id column (default=show)') do |show_id|
+      options[:show_id] = show_id
+    end
+
+    opts.on("--[no-]timestamps", 'Show (or hide) the timestamp columns (default=show)') do |show_timestamps|
+      options[:show_timestamps] = show_timestamps
+    end
+
+    opts.on("-tTITLE", "--title TITLE", "override the title") do |title|
+      options[:title] = title
+    end
+
+    opts.on("-v", "--[no-]verbose", "Verbose output") do |v|
+      options[:verbose] = v
+    end
+
+    opts.on_tail("-h", "--help", "Show this message") do
+      puts opts
+      exit
+    end
+  end
+  opt_parser.parse!(args)
+  options
+end
+
+options = parse_arguments!
+
+STDERR.puts options if options[:verbose]
+
+require 'pg'
+CONNECTION = PG.connect(dbname: ARGV.last)
+
+include Pgerd
+
+database = Database.new(ARGV.first)
+erd = Erd.new(database, options)
+
+puts erd.diagram.output(options[:format] => String)

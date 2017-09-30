@@ -1,0 +1,35 @@
+AllCops:
+  Include:
+    - Rakefile
+    - config.ru
+    - lib/**/*.rake
+    - '**/Gemfile'
+  Exclude:
+    - db/schema.rb
+
+Documentation:
+  Enabled: false
+
+Layout/MultilineHashBraceLayout:
+  EnforcedStyle: same_line
+
+Layout/MultilineMethodCallBraceLayout:
+  EnforcedStyle: same_line
+
+Metrics/LineLength:
+  Max: 110
+
+Style/DoubleNegation:
+  Enabled: false
+
+Style/EmptyMethod:
+  EnforcedStyle: expanded
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/MutableConstant:
+  Enabled: false
+
+Style/StringLiterals:
+  Enabled: false

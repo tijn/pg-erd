@@ -1,0 +1,15 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    pg (0.20.0)
+    ruby-graphviz (1.2.3)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  pg
+  ruby-graphviz
+
+BUNDLED WITH
+   1.14.6

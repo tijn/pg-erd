@@ -1,0 +1,4 @@
+#!/bin/sh
+
+pg-erd $@ | dot -Tpng > erd.png
+optipng erd.png
