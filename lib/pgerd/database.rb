@@ -11,7 +11,7 @@ module Pgerd
     end
 
     def all_table_names
-      CONNECTION
+      connection
         .query("SELECT tablename FROM pg_catalog.pg_tables")
         .map { |table| table['tablename'] }
         .reject { |name| name.start_with?('pg_') || name.start_with?('sql_')}
@@ -22,7 +22,7 @@ module Pgerd
     end
 
     def raw_foreign_keys
-      CONNECTION
+      connection
         .query <<-END_SQL
             select c.constraint_name
                 , x.table_schema as from_schema
@@ -46,7 +46,11 @@ module Pgerd
     end
 
     def tables
-      table_names.map { |name| Table.new(name) }
+      table_names.map { |name| Table.new(self, name) }
+    end
+
+    def connection
+      @connection ||= PG.connect(dbname: name)
     end
   end
 end
