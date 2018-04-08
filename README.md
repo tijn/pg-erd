@@ -22,7 +22,7 @@ Install the gem
 
 ```sh
 gem install pg-erd
-``
+```
 
 Use the thing:
 
