@@ -4,7 +4,7 @@
 
 Postgres ERD is a program that allows you to easily generate a diagram based on a postgresql database schema. The diagram gives an overview of how your tables are related. Having a diagram to describes your tables is perfect for documentation.
 
-Postgres ERD is heavily inspired by [Rails ERD](https://voormedia.github.io/rails-erd/). It serves a some different use cases. First and foremost it does not rely on Rails. It will work with any database schema.
+Postgres ERD is heavily inspired by [Rails ERD](https://voormedia.github.io/rails-erd/) but it serves some different use cases. First and foremost it does not rely on Rails (like Rails ERD). Thus you can use it for any database schema regardless of your project's language.
 
 ## An Example
 
