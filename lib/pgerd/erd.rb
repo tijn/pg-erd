@@ -8,7 +8,7 @@ module Pgerd
     def initialize(database, options = {})
       @database = database
       @title = options[:title] || @database.name
-      @size = options[:size].downcase
+      @size = options[:size].to_s.downcase
       @options = options
 
       create_a_digraph
