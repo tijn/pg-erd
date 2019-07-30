@@ -31,5 +31,9 @@ module Pgerd
     def to_s
       "#{name} [label = <>]"
     end
+
+    def foreign_keys
+      @database.foreign_keys.select { |key| key.for_table? name }
+    end
   end
 end
