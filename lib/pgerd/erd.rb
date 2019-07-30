@@ -8,7 +8,7 @@ module Pgerd
     def initialize(database, options = {})
       @database = database
       @title = options[:title] || @database.name
-      @size = options[:size].downcase
+      @size = options[:size].to_s.downcase
       @options = options
 
       create_a_digraph
@@ -28,18 +28,22 @@ module Pgerd
 
     def create_a_digraph
       @diagram = GraphViz.new(@title,
-        type: :digraph,
+        center: 1,
         concentrate: true,
-        nodesep: '0.4',
+        fontname: 'Helvetica',
+        fontsize: 13,
+        label: @title + "\n\n",
+        labelloc: 't',
+        margin: 0,
+        nodesep: -10.0,
+        outputorder: 'nodesfirst',
+        overlap: false,
+        pad: '0.4,0.4',
         rankdir: 'LR',
         ranksep: '0.5',
-        pad: '0.4,0.4',
-        margin: '0,0',
-        labelloc: 't',
-        fontsize: 13,
-        fontname: 'Helvetica',
-        outputorder: 'nodesfirst',
-        label: @title + "\n\n")
+        splines: true,
+        type: :digraph,
+          )
 
       if a4?
         diagram[:size] = '8.3,11.7!'
