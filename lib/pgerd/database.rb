@@ -46,7 +46,10 @@ module Pgerd
     end
 
     def tables
-      table_names.map { |name| Table.new(self, name) }
+      table_names
+        .map { |name| Table.new(self, name) }
+        .sort_by { |table| table.foreign_keys.size }
+        .reverse
     end
 
     def connection

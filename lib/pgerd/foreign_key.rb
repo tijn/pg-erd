@@ -21,5 +21,9 @@ module Pgerd
     def to_a_for_sorting
       [@from_table, @from_column, @to_table, @to_column]
     end
+
+    def for_table?(table)
+      @from_table == table || @to_table == table
+    end
   end
 end
