@@ -53,7 +53,7 @@ module Pgerd
     end
 
     def connection
-      @connection ||= PG.connect(dbname: name)
+      @connection ||= PG.connect(dbname: name, host: 'host.docker.internal', port: 5432, user: 'postgres')
     end
   end
 end

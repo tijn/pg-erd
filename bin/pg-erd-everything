@@ -51,7 +51,7 @@ options = parse_arguments!
 STDERR.puts options if options[:verbose]
 
 def each_database
-  PG.connect.query("SELECT datname FROM pg_database WHERE datistemplate = false;").each do |result|
+  PG.connect(host: 'host.docker.internal', port: 5432, user: 'postgres').query("SELECT datname FROM pg_database WHERE datistemplate = false;").each do |result|
     yield result['datname']
   end
 end
