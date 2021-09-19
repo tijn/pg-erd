@@ -4,17 +4,16 @@ module Pgerd
   class Erd
     class TableNode
       TABLE_TEMPLATE = <<-END_HTML
-<table border="0" align="center" cellspacing="0" cellpadding="1">
-  <tr><td align="center"><font point-size="10"><%= name %></font></td></tr>
-  <tr><td height='4'></td></tr>
-  <hr/>
-  <tr><td height='6'></td></tr>
+<table border="1" align="center" cellborder="0" cellpadding="2" cellspacing="2">
+  <tr><td bgcolor="#f8f8f8" align="center" cellpadding="8"><font point-size="11"><%= name %></font></td></tr>
   <% grouped_columns.each_with_index do |group, index| %>
     <% if index > 0 %>
       <tr><td height='3'></td></tr>
     <% end %>
     <% group.each do |column| %>
-      <tr><td align="left" port="<%= column.name %>"><%= column.name %> <font color="grey60"><i><%= column.abbreviated_data_type %></i></font></td></tr>
+      <tr>
+        <td align="left" port="<%= column.name %>"><%= column.name %>   <font color="grey60"><%= column.abbreviated_data_type %></font></td>
+      </tr>
     <% end %>
   <% end %>
 </table>

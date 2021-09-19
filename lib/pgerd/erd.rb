@@ -28,37 +28,42 @@ module Pgerd
 
     def create_a_digraph
       @diagram = GraphViz.new(@title,
+        bgcolor: '#f4f8fa',
         center: 1,
         concentrate: true,
+        fontcolor: '#000000d0',
         fontname: 'Helvetica',
         fontsize: 13,
         label: @title + "\n\n",
         labelloc: 't',
-        margin: 0,
-        nodesep: -10.0,
+        # margin: 0,
+        nodesep: 0.2,
         outputorder: 'nodesfirst',
         overlap: false,
         pad: '0.4,0.4',
         rankdir: 'LR',
         ranksep: '0.5',
         splines: true,
-        type: :digraph,
-          )
+        type: :digraph)
 
       if a4?
         diagram[:size] = '8.3,11.7!'
         diagram[:ratio] = 'compress'
       end
 
+      @diagram.node[:color] = '#000000d0'
+      @diagram.node[:fillcolor] = '#ffffff'
       @diagram.node[:fontname] = 'Helvetica'
       @diagram.node[:fontsize] = 10
-      @diagram.node[:margin] = "0.07,0.05"
+      # @diagram.node[:margin] = "0.07,0.05"
+      @diagram.node[:margin] = "0"
       @diagram.node[:penwidth] = "1.0"
       @diagram.node[:shape] = 'box'
-      @diagram.node[:style] = 'rounded'
+      @diagram.node[:style] = 'filled'
 
       @diagram.edge[:arrowsize] = "0.9"
       @diagram.edge[:arrowtail] = "none"
+      @diagram.edge[:color] = '#000000d0'
       @diagram.edge[:dir] = "both"
       @diagram.edge[:fontname] = "Helvetica"
       @diagram.edge[:fontsize] = "7"
