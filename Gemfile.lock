@@ -3,6 +3,7 @@ GEM
   specs:
     pg (0.20.0)
     ruby-graphviz (1.2.3)
+    ruby-progressbar (1.11.0)
 
 PLATFORMS
   ruby
@@ -10,6 +11,7 @@ PLATFORMS
 DEPENDENCIES
   pg
   ruby-graphviz
+  ruby-progressbar
 
 BUNDLED WITH
-   1.14.6
+   2.3.9
