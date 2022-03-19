@@ -77,7 +77,8 @@ module Pgerd
       progress = ProgressBar.create({
         :title => 'Tables',
         :total => @database.tables.count,
-        :format => '%t: |%B| %%%p %E'
+        :format => '%t: |%B| %%%p %E',
+	:output => $stderr
 	})
 
       @database.tables.each do |table|
@@ -95,7 +96,8 @@ module Pgerd
       progress = ProgressBar.create({
         :title => 'Foreign Keys',
         :total => @database.foreign_keys.count,
-        :format => '%t: |%B| %%%p %E'
+        :format => '%t: |%B| %%%p %E',
+	:output => $stderr
       })
       @database.foreign_keys.each do |fk|
         draw_foreign_key(fk)
