@@ -18,7 +18,7 @@ module Pgerd
     end
 
     def foreign_keys
-      raw_foreign_keys.map { |data| ForeignKey.new(data) }
+      @foreign_keys ||= raw_foreign_keys.map { |data| ForeignKey.new(data) }
     end
 
     def raw_foreign_keys
@@ -46,7 +46,8 @@ module Pgerd
     end
 
     def tables
-      table_names
+      @tables ||=
+	table_names
         .map { |name| Table.new(self, name) }
         .sort_by { |table| table.foreign_keys.size }
         .reverse
