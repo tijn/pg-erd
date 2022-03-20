@@ -74,13 +74,11 @@ module Pgerd
     end
 
     def draw_the_tables
-      progress = ProgressBar.create({
-        :title => 'Tables',
-        :total => @database.tables.count,
-        :format => '%t: |%B| %%%p %E',
-	:output => $stderr
-	})
-
+      progress = ProgressBar.create(
+        title: 'Tables',
+        total: @database.tables.count,
+        format: '%t: |%B| %%%p %E',
+	output: $stderr)
       @database.tables.each do |table|
         draw_table(table)
 	progress.increment
