@@ -1,4 +1,5 @@
 require 'ruby-graphviz'
+require 'ruby-progressbar'
 require_relative 'erd/table_node'
 
 module Pgerd
@@ -73,7 +74,15 @@ module Pgerd
     end
 
     def draw_the_tables
-      @database.tables.each { |table| draw_table(table) }
+      progress = ProgressBar.create(
+        title: 'Tables',
+        total: @database.tables.count,
+        format: '%t: |%B| %%%p %E',
+	output: $stderr)
+      @database.tables.each do |table|
+        draw_table(table)
+	progress.increment
+      end
     end
 
     def draw_table(table)
@@ -82,7 +91,15 @@ module Pgerd
     end
 
     def draw_the_foreign_keys
-      @database.foreign_keys.each { |fk| draw_foreign_key(fk) }
+      progress = ProgressBar.create(
+        title: 'Foreign Keys',
+        total: @database.foreign_keys.count,
+        format: '%t: |%B| %%%p %E',
+	output: $stderr)
+      @database.foreign_keys.each do |fk|
+        draw_foreign_key(fk)
+        progress.increment
+      end
     end
 
     def draw_foreign_key(fk)
