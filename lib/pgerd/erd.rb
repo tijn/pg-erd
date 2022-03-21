@@ -91,12 +91,11 @@ module Pgerd
     end
 
     def draw_the_foreign_keys
-      progress = ProgressBar.create({
-        :title => 'Foreign Keys',
-        :total => @database.foreign_keys.count,
-        :format => '%t: |%B| %%%p %E',
-	:output => $stderr
-      })
+      progress = ProgressBar.create(
+        title: 'Foreign Keys',
+        total: @database.foreign_keys.count,
+        format: '%t: |%B| %%%p %E',
+	output: $stderr)
       @database.foreign_keys.each do |fk|
         draw_foreign_key(fk)
         progress.increment
