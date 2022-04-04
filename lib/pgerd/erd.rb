@@ -98,7 +98,7 @@ module Pgerd
         total: @database.tables.count,
         format: '%t: |%B| %%%p %E',
 	output: $stderr)
-      @database.tables.each do |view|
+      @database.views.each do |view|
         draw_view(view)
         progress.increment
       end
