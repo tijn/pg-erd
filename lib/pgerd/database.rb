@@ -1,5 +1,6 @@
 require_relative 'foreign_key'
 require_relative 'table'
+require_relative 'view'
 
 module Pgerd
   class Database
@@ -14,6 +15,13 @@ module Pgerd
       connection
         .query("SELECT tablename FROM pg_catalog.pg_tables")
         .map { |table| table['tablename'] }
+        .reject { |name| name.start_with?('pg_') || name.start_with?('sql_')}
+    end
+
+    def all_view_names
+      connection
+        .query("SELECT viewname FROM pg_catalog.pg_views WHERE schemaname NOT IN ('pg_catalog', 'information_schema')")
+        .map { |view| view['viewname'] }
         .reject { |name| name.start_with?('pg_') || name.start_with?('sql_')}
     end
 
@@ -50,6 +58,13 @@ module Pgerd
 	table_names
         .map { |name| Table.new(self, name) }
         .sort_by { |table| table.foreign_keys.size }
+        .reverse
+    end
+
+    def views
+      @views ||=
+        all_view_names
+        .map { |name| View.new(self, name) }
         .reverse
     end
 
