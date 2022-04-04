@@ -1,6 +1,7 @@
 require 'ruby-graphviz'
 require 'ruby-progressbar'
 require_relative 'erd/table_node'
+require_relative 'erd/view_node'
 
 module Pgerd
   class Erd
@@ -14,6 +15,7 @@ module Pgerd
 
       create_a_digraph
       draw_the_tables
+      draw_the_views
       draw_the_foreign_keys
     end
 
@@ -88,6 +90,23 @@ module Pgerd
     def draw_table(table)
       html = Erd::TableNode.render(table, @options)
       @diagram.add_node(table.name, label: "<#{html}>")
+    end
+
+    def draw_the_views
+      progress = ProgressBar.create(
+        title: 'Views',
+        total: @database.tables.count,
+        format: '%t: |%B| %%%p %E',
+	output: $stderr)
+      @database.tables.each do |view|
+        draw_view(view)
+        progress.increment
+      end
+    end
+
+    def draw_view(view)
+      html = Erd::ViewNode.render(view, @options)
+      @diagram.add_node(view.name, label: "<#{html}>")
     end
 
     def draw_the_foreign_keys

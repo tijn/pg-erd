@@ -17,6 +17,15 @@ module Pgerd
         .reject { |name| name.start_with?('pg_') || name.start_with?('sql_')}
     end
 
+    def all_view_names
+      connection
+        .query <<-END_SQL
+          SELECT viewname
+          FROM pg_catalog.pg_views
+          WHERE schemaname NOT IN ('pg_catalog', 'information_schema')
+        END_SQL
+    end
+
     def foreign_keys
       @foreign_keys ||= raw_foreign_keys.map { |data| ForeignKey.new(data) }
     end
@@ -51,6 +60,12 @@ module Pgerd
         .map { |name| Table.new(self, name) }
         .sort_by { |table| table.foreign_keys.size }
         .reverse
+    end
+
+    def views
+      @views ||=
+        all_view_names
+        .map { |name| View.new(self, name) }
     end
 
     def connection
