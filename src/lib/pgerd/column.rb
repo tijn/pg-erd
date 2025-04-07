@@ -24,10 +24,6 @@ module Pgerd
       end
     end
 
-    def group_for_sorting
-      GROUPS.index(group)
-    end
-
     def abbreviated_data_type
       # The SQL standard requires that writing just timestamp be equivalent to timestamp without time zone,
       # and PostgreSQL honors that behavior.
@@ -42,7 +38,13 @@ module Pgerd
     end
 
     def to_a_for_sorting
-      [group_for_sorting, name, data_type]
+      [group_index_for_sorting, name, data_type]
+    end
+
+    private
+
+    def group_index_for_sorting
+      GROUPS.index(group)
     end
   end
 end

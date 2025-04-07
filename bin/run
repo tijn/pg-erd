@@ -1,0 +1,6 @@
+#!/bin/sh
+
+OUTPUT_DIR=${1:-$PWD}
+echo $OUTPUT_DIR
+
+docker run --expose 5432 -v "$OUTPUT_DIR":/output pg-erd:latest "bin/pg-erd-everything"

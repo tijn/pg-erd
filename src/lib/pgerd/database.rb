@@ -3,8 +3,8 @@ require_relative 'table'
 
 module Pgerd
   class Database
-    attr_reader :name
     TABLES_TO_IGNORE = %w(ar_internal_metadata schema_migrations)
+    attr_reader :name
 
     def initialize(name)
       @name = name
@@ -20,6 +20,23 @@ module Pgerd
     def foreign_keys
       raw_foreign_keys.map { |data| ForeignKey.new(data) }
     end
+
+    def table_names
+      all_table_names - TABLES_TO_IGNORE
+    end
+
+    def tables
+      table_names
+        .map { |name| Table.new(self, name) }
+        .sort_by { |table| table.foreign_keys.size }
+        .reverse
+    end
+
+    def connection
+      @connection ||= PG.connect(dbname: name, host: 'host.docker.internal', port: 5432, user: 'postgres')
+    end
+
+    private
 
     def raw_foreign_keys
       connection
@@ -39,21 +56,6 @@ module Pgerd
                 and y.constraint_name = c.unique_constraint_name
             order by c.constraint_name, x.ordinal_position
           END_SQL
-    end
-
-    def table_names
-      all_table_names - TABLES_TO_IGNORE
-    end
-
-    def tables
-      table_names
-        .map { |name| Table.new(self, name) }
-        .sort_by { |table| table.foreign_keys.size }
-        .reverse
-    end
-
-    def connection
-      @connection ||= PG.connect(dbname: name, host: 'host.docker.internal', port: 5432, user: 'postgres')
     end
   end
 end

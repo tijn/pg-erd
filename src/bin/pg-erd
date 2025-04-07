@@ -1,13 +1,11 @@
 #!/usr/bin/env ruby
-
-require 'pg'
 require 'optparse'
 require_relative '../lib/pgerd'
-include Pgerd
 
 def parse_arguments!(args = ARGV)
   options = {
-    format: 'svg',
+    format: 'dot',
+    size: nil,
     show_id: true,
     show_timestamps: true,
     verbose: false
@@ -17,9 +15,11 @@ def parse_arguments!(args = ARGV)
     opts.banner = "Usage: #{$0} [options] DATABASE"
     opts.separator ''
 
-    # opts.on("-fFORMAT", "--format FORMAT", GraphViz::Constants::FORMATS.join(', ') + " (default=dot)") do |format|
-    #   options[:format] = format.downcase
-    # end
+    formats = GraphViz::Constants::FORMATS
+
+    opts.on("-fFORMAT", "--format FORMAT", "#{formats.join(', ')} (default=dot)") do |format|
+        options[:format] = format.downcase
+      end
 
     opts.on("--[no-]id", 'Show (or hide) the id column (default=show)') do |show_id|
       options[:show_id] = show_id
@@ -31,6 +31,14 @@ def parse_arguments!(args = ARGV)
 
     opts.on("-tTITLE", "--title TITLE", "override the title") do |title|
       options[:title] = title
+    end
+
+    opts.on("--a4", 'try to fit the erd on an A4') do
+      options[:size] = 'A4'
+    end
+
+    opts.on("--size SIZE", 'Set the paper size (conflicts with --a4)') do |size|
+      options[:size] = size
     end
 
     opts.on("-v", "--[no-]verbose", "Verbose output") do |v|
@@ -50,17 +58,12 @@ options = parse_arguments!
 
 STDERR.puts options if options[:verbose]
 
-def each_database
-  PG.connect(host: 'host.docker.internal', port: 5432, user: 'postgres').query("SELECT datname FROM pg_database WHERE datistemplate = false;").each do |result|
-    yield result['datname']
-  end
-end
+require 'pg'
+CONNECTION = PG.connect(dbname: ARGV.last)
 
-each_database do |name|
-  puts name
-  database = Database.new(name)
-  erd = Erd.new(database, options)
-  File.open("#{name}.#{options[:format]}", 'w') do |file|
-    file.puts erd.diagram.output(options[:format] => String)
-  end
-end
+include Pgerd
+
+database = Database.new(ARGV.first)
+erd = Erd.new(database, options)
+
+puts erd.diagram.output(options[:format] => String)

@@ -35,7 +35,7 @@ module Pgerd
         label: @title + "\n\n",
         labelloc: 't',
         margin: 0,
-        nodesep: -10.0,
+        nodesep: 2.0,
         outputorder: 'nodesfirst',
         overlap: false,
         pad: '0.4,0.4',
