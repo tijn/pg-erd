@@ -1,3 +1,4 @@
-erds/
+*.gem
 *.svg
 .ruby-version
+erds/

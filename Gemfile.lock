@@ -1,17 +1,25 @@
+PATH
+  remote: .
+  specs:
+    pg-erd (0.1.0)
+      pg
+      ruby-graphviz
+      ruby-progressbar
+
 GEM
   remote: https://rubygems.org/
   specs:
-    pg (0.20.0)
-    ruby-graphviz (1.2.3)
-    ruby-progressbar (1.11.0)
+    pg (1.6.3)
+    rexml (3.4.4)
+    ruby-graphviz (1.2.5)
+      rexml
+    ruby-progressbar (1.13.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  pg
-  ruby-graphviz
-  ruby-progressbar
+  pg-erd!
 
 BUNDLED WITH
    2.3.9
